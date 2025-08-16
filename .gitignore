@@ -1,0 +1,9 @@
+# dependencies
+node_modules
+
+# project specific
+dist
+package-lock.json
+
+#misc
+.DS_Store
