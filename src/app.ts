@@ -15,9 +15,11 @@ const repositoryType = <RepositoryType> process.env.REPOSITORY_TYPE || "InMemory
 
 //Setup Router with module routes
 const router = Router();
-const {default: repository}  = await import(`./modules/appointments/appointments${repositoryType}.js`);
+const {default: appointmentsRepository}  = await import(`./repositories/appointments${repositoryType}.js`);
+const {default: cliniciansRepository}  = await import(`./repositories/clinicians${repositoryType}.js`);
+const {default: patientsRepository}  = await import(`./repositories/patients${repositoryType}.js`);
 
-app.use("/appointments", getAppointmentsRoutes(router, repository));
+app.use("/appointments", getAppointmentsRoutes(router, appointmentsRepository, cliniciansRepository, patientsRepository));
 
 // Middlewares
 app.use(routeNotFoundMiddleware);

@@ -1,12 +1,15 @@
 import type { Router } from "express";
 import appointmentsService from "./appointmentsService.js";
-import { AppointmentRepository } from "../../types/appointmentModel.js";
+import { AppointmentRepository } from "../../types/appointmentTypes.js";
+import { ClinicianRepository } from "../../types/clinicianTypes.js";
+import { PatientRepository } from "../../types/patientTypes.js";
 
-const getAppointmentsRoutes = (router: Router, repository: AppointmentRepository) =>  {
+const getAppointmentsRoutes = (router: Router, appointmentsRepository: AppointmentRepository, cliniciansRepository: ClinicianRepository, patientsRepository: PatientRepository) =>  {
 
-  const {getAppointmentsList} = appointmentsService(repository);
-  
+  const {getAppointmentsList, createAppointment} = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+
   router.get("/", getAppointmentsList);
+  router.post("/", createAppointment);
 
   return router;
 }

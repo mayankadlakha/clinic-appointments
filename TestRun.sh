@@ -14,6 +14,22 @@ curl -i -X GET "http://localhost:3000/appointments?datetimeFrom=2025-08-16T15:30
 
 echo -e "\n ------------------------------------------------------------------------------ \n"
 
+echo "Create Appointments list with valid information"
+curl -i -X POST "http://localhost:3000/appointments" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "clinicianId": 0,
+        "patientId": 0,
+        "datetimeFrom": "2025-08-16T15:30:00.000Z",
+        "datetimeTo": "2025-08-16T16:00:00.000Z"
+    }'
+
+echo "Get Appointments list - from 3:30pm to 4:00pm: should return 2 records now"
+curl -i -X GET "http://localhost:3000/appointments?datetimeFrom=2025-08-16T15:30:00.000Z&datetimeTo=2025-08-16T16:00:00.000Z" \
+    -H "Accept: application/json"
+
+echo -e "\n ------------------------------------------------------------------------------ \n"
+
 echo "Get Appointments list with invalid dates"
 curl -i -X GET "http://localhost:3000/appointments?datetimeFrom=2025-08-16T14:30:00.000Z&datetimeTo=2025-08-15T14:30:00.000Z" \
     -H "Accept: application/json"
