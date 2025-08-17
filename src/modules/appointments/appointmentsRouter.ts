@@ -1,9 +1,12 @@
 import type { Router } from "express";
-import { getAppointmentsList } from "./appointmentsService.js";
+import appointmentsService from "./appointmentsService.js";
+import { AppointmentRepository } from "../../types/appointmentModel.js";
 
-const getAppointmentsRoutes = (router: Router) =>  {
+const getAppointmentsRoutes = (router: Router, repository: AppointmentRepository) =>  {
+
+  const {getAppointmentsList} = appointmentsService(repository);
   
-  router.post("/", getAppointmentsList);
+  router.get("/", getAppointmentsList);
 
   return router;
 }

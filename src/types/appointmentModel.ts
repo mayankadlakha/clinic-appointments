@@ -3,8 +3,8 @@ export interface Appointment {
     datetimeFrom: Date;
     datetimeTo: Date;
     status: AppointmentStatus;
-    type: AppointmentType;
-
+    
+    type?: AppointmentType;
     patientId?: number;
     notes?: string;
 }
@@ -17,4 +17,10 @@ export type Clinician = {
     firstName: string,
     lastName: string,
     speciality: string,
+}
+
+export interface AppointmentRepository {
+    getList(): Promise<Appointment[]>;
+    getListByDatetimeFrom(datetimeFrom: Date): Promise<Appointment[]>;
+    getListByDatetimeRange(datetimeFrom: Date, datetimeTo: Date): Promise<Appointment[]>;
 }

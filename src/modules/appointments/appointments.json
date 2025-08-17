@@ -1,0 +1,35 @@
+[ 
+    {
+        "clinician": {
+            "id": 1,
+            "firstName": "Immortan",
+            "lastName": "Joe",
+            "speciality": "Physiotherapist"
+        },
+        "datetimeFrom": "2025-08-16T14:30:00.000Z",
+        "datetimeTo": "2025-08-16T15:30:00.000Z",
+        "status": "available"
+    },
+    {
+        "clinician": {
+            "id": 2,
+            "firstName": "Max",
+            "lastName": "Rockatansky",
+            "speciality": "Cardiologist"
+        },
+        "datetimeFrom": "2025-08-16T16:00:00.000Z",
+        "datetimeTo": "2025-08-16T16:30:00.000Z",
+        "status": "available"
+    },
+    {
+        "clinician": {
+            "id": 1,
+            "firstName": "Immortan",
+            "lastName": "Joe",
+            "speciality": "Physiotherapist"
+        },
+        "datetimeFrom": "2025-08-16T16:15:00.000Z",
+        "datetimeTo": "2025-08-16T17:00:00.000Z",
+        "status": "available"
+    }
+]
