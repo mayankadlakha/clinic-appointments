@@ -91,8 +91,14 @@ const appointmentsInMemoryRepository : AppointmentRepository = {
     },
 
     async createAppointment(clinician: Clinician, patient: Patient, datetimeFrom: Date, datetimeTo: Date): Promise<number> {
-        const existingAppointmentKeys = Object.keys(appointments).map(Number);
-        const nextRecordId = Math.max(...existingAppointmentKeys) + 1;
+        let nextRecordId: number;
+        // If appointments exist, use the highest existing recordId to generate the next one, else use 0
+        if( Object.keys(appointments).length > 0){
+            const existingAppointmentKeys = Object.keys(appointments).map(Number);
+            nextRecordId = Math.max(...existingAppointmentKeys) + 1;
+        } else {
+            nextRecordId = 0;
+        }
         
         appointments[nextRecordId] = {
             recordId: nextRecordId,

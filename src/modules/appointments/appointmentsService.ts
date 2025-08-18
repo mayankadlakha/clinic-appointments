@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { isValidISODate, isFromBeforeTo } from "./datetimeValidator.js";
+import { isValidISODate, isFromBeforeTo } from "../../common/__tests__/datetimeValidator.js";
 import {HttpError} from "../../middlewares/errorHandlerMiddleware.js";
 import { Appointment, AppointmentRepository, CreateAppointmentRequest } from "../../types/appointmentTypes.js";
 import { PatientRepository } from "../../types/patientTypes.js";
@@ -42,6 +42,7 @@ const appointmentsService = (
           message: "Invalid datetime. Please use ISO format and ensure datetimeFrom is before datetimeTo",
           statusCode: 400,
         }));
+        return;
       }    
     } 
 
@@ -80,6 +81,7 @@ const appointmentsService = (
           message: "Invalid datetime. Please use ISO 8601 format.",
           statusCode: 400,
         }));
+        return;
       }
 
       // Validate date range
@@ -88,6 +90,7 @@ const appointmentsService = (
           message: "Invalid datetime. Please use ISO format and ensure datetimeFrom is before datetimeTo",
           statusCode: 400,
         }));
+        return;
       }
 
       /* Validate business logic */

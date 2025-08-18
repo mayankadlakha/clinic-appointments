@@ -3,6 +3,7 @@ import getAppointmentsRoutes from "./modules/appointments/appointmentsRouter.js"
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import routeNotFoundMiddleware from "./middlewares/routeNotFoundMiddleware.js";
 import { RepositoryType } from "./types/commonTypes.js";
+import getCliniciansRoutes from "./modules/clinicians/cliniciansRouter.js";
 
 
 const app: Application = express();
@@ -20,6 +21,7 @@ const {default: cliniciansRepository}  = await import(`./repositories/clinicians
 const {default: patientsRepository}  = await import(`./repositories/patients${repositoryType}.js`);
 
 app.use("/appointments", getAppointmentsRoutes(router, appointmentsRepository, cliniciansRepository, patientsRepository));
+app.use("/clinicians", getCliniciansRoutes(router, appointmentsRepository, cliniciansRepository, patientsRepository));
 
 // Middlewares
 app.use(routeNotFoundMiddleware);

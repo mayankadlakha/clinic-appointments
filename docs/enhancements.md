@@ -9,3 +9,5 @@ I have added some additional things that were not mentioned in the original requ
 * Move the date range logic to the repository, since it aligns more with business logic rather than repository logic.
 
 * Service layer could be refactored to separate out validation code.
+
+* Instead of having two functions for date range, I could just past in max date range
