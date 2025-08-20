@@ -67,7 +67,7 @@ const appointmentsService = (
       const {clinicianId, patientId, datetimeFrom, datetimeTo, } = request.body as CreateAppointmentRequest;
 
       // Validate required fields
-      if(isNaN(Number(clinicianId)) || Number(clinicianId) < 0 || isNaN(Number(patientId)) || Number(patientId) < 0 || !datetimeFrom || !datetimeTo){
+      if(typeof clinicianId !== "number" || clinicianId < 0 || typeof patientId !== "number" || patientId < 0 || !datetimeFrom || !datetimeTo){
         next(new HttpError({
           message: "Invalid request body. Please make sure clinicianId, patientId, datetimeFrom, datetimeTo are provided.",
           statusCode: 400,

@@ -25,3 +25,4 @@ Types
 
 Limitations
 * Service is quite coupled to Express framework. In future, could make service more simple and the router/controller can handle Express specific details. It also makes it a bit harder to test the service in isolation, without using a lot of mocks.
+* Appointments service uses current server time to default datetimeFrom when it isnt provided. This time could be different from the client and may lead to unexpected results.
