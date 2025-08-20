@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { isValidISODate, isFromBeforeTo } from "../../common/__tests__/datetimeValidator.js";
-import {HttpError} from "../../middlewares/errorHandlerMiddleware.js";
 import { Appointment, AppointmentRepository, CreateAppointmentRequest } from "../../types/appointmentTypes.js";
 import { PatientRepository } from "../../types/patientTypes.js";
 import { ClinicianRepository } from "../../types/clinicianTypes.js";
+import { isFromBeforeTo, isValidISODate } from "../../common/datetimeValidator";
+import { HttpError } from "../../common/errors";
 
 
 
@@ -63,7 +63,7 @@ const appointmentsService = (
     };
   };
 
-    const createAppointment = async (request: Request<{}, {}, {}, AppointmentsQuery>, response: Response, next: NextFunction) => {
+    const createAppointment = async (request: Request, response: Response, next: NextFunction) => {
       const {clinicianId, patientId, datetimeFrom, datetimeTo, } = request.body as CreateAppointmentRequest;
 
       // Validate required fields

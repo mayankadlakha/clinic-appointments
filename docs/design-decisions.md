@@ -21,3 +21,7 @@ Decided to pass in Clinician and Patient objects to createAppointment because it
 
 Types
 - Application (API layer) has basic fields that I have assumed would be useful for most use cases of the API
+
+
+Limitations
+* Service is quite coupled to Express framework. In future, could make service more simple and the router/controller can handle Express specific details. It also makes it a bit harder to test the service in isolation, without using a lot of mocks.

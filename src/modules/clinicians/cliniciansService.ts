@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { isValidISODate, isFromBeforeTo } from "../../common/__tests__/datetimeValidator.js";
-import {HttpError} from "../../middlewares/errorHandlerMiddleware.js";
+import { isValidISODate, isFromBeforeTo } from "../../common/datetimeValidator.js";
 import { Appointment, AppointmentRepository } from "../../types/appointmentTypes.js";
 import { PatientRepository } from "../../types/patientTypes.js";
 import { ClinicianRepository } from "../../types/clinicianTypes.js";
+import { HttpError } from "../../common/errors.js";
 
 
 const MAX_JS_DATE_MS = 8640000000000000;

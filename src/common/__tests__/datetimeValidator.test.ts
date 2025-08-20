@@ -1,4 +1,4 @@
-import {isFromBeforeTo, isValidISODate}  from "./datetimeValidator";
+import {isFromBeforeTo, isValidISODate}  from "../datetimeValidator";
 
 describe("isValidISODate", () => {
   it.each([
