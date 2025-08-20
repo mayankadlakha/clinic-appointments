@@ -1,4 +1,3 @@
-import { mock } from "node:test";
 import { AppointmentRepository } from "../../../types/appointmentTypes";
 import { ClinicianRepository } from "../../../types/clinicianTypes";
 import { PatientRepository } from "../../../types/patientTypes";
@@ -140,10 +139,7 @@ describe("appointmentsService", () => {
             ["datetimeFrom occurs after datetimeTo", {datetimeFrom: "2025-05-15T12:00:00.000Z", datetimeTo: "2025-05-15T11:00:00.000Z"}],
            ])("given invalid request with %s, calls next with error", async (_, query) => {
             // Setup mocks
-            const mockedList = [{id: 1},{id: 2}]
             const {appointmentsRepository, cliniciansRepository, patientsRepository} = setup();
-            appointmentsRepository.getListByDatetimeRange = jest.fn().mockResolvedValue(mockedList);
-            appointmentsRepository.getListByDatetimeFrom = jest.fn().mockResolvedValue(mockedList);
 
             // Make actual request
             const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
