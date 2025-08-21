@@ -3,10 +3,11 @@ import appointmentsService from "./appointmentsService.js";
 import { AppointmentRepository } from "../../types/appointmentTypes.js";
 import { ClinicianRepository } from "../../types/clinicianTypes.js";
 import { PatientRepository } from "../../types/patientTypes.js";
+import Clock from "../../common/clock.js";
 
-const getAppointmentsRoutes = (router: Router, appointmentsRepository: AppointmentRepository, cliniciansRepository: ClinicianRepository, patientsRepository: PatientRepository) =>  {
+const getAppointmentsRoutes = (router: Router, appointmentsRepository: AppointmentRepository, cliniciansRepository: ClinicianRepository, patientsRepository: PatientRepository, clock: Clock) =>  {
 
-  const {getAppointmentsList, createAppointment} = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+  const {getAppointmentsList, createAppointment} = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
 
   router.get("/", getAppointmentsList);
   router.post("/", createAppointment);

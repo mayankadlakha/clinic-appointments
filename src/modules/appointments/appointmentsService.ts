@@ -4,6 +4,7 @@ import { PatientRepository } from "../../types/patientTypes.js";
 import { ClinicianRepository } from "../../types/clinicianTypes.js";
 import { isFromBeforeTo, isValidISODate } from "../../common/datetimeValidator.js";
 import { HttpError } from "../../common/errors.js";
+import Clock from "../../common/clock.js";
 
 
 
@@ -17,13 +18,14 @@ interface AppointmentsQuery {
 const appointmentsService = (
     appointmentsRepository: AppointmentRepository, 
     cliniciansRepository: ClinicianRepository, 
-    patientsRepository: PatientRepository
+    patientsRepository: PatientRepository,
+    clock: Clock,
   ) => 
   {
 
   const getAppointmentsList = async (request: Request<{}, {}, {}, AppointmentsQuery>, response: Response, next: NextFunction) => {
     const params = request.query;
-    const datetimeFrom: string = params.datetimeFrom || new Date().toISOString();
+    const datetimeFrom: string = params.datetimeFrom || clock.now().toISOString();
     const datetimeTo: string | undefined = params.datetimeTo;
     let responsePayload: Appointment[] = [];
     
@@ -31,9 +33,9 @@ const appointmentsService = (
     if(datetimeTo){
       if(isValidISODate(datetimeTo) 
         && isValidISODate(datetimeFrom) 
-        && isFromBeforeTo(new Date(datetimeFrom), new Date(datetimeTo))){
+        && isFromBeforeTo(clock.createDatetime(datetimeFrom), clock.createDatetime(datetimeTo))){
         
-        responsePayload = await appointmentsRepository.getListByDatetimeRange(new Date(datetimeFrom), new Date(datetimeTo));
+        responsePayload = await appointmentsRepository.getListByDatetimeRange(clock.createDatetime(datetimeFrom), clock.createDatetime(datetimeTo));
         response.status(200);
         response.json(responsePayload);
         return;
@@ -48,7 +50,7 @@ const appointmentsService = (
 
     // Given only datetimeFrom is provided
     if(isValidISODate(datetimeFrom)){
-      const datetimeFromDate: Date = new Date(datetimeFrom);
+      const datetimeFromDate: Date = clock.createDatetime(datetimeFrom);
       
       responsePayload = await appointmentsRepository.getListByDatetimeFrom(datetimeFromDate);
       response.status(200);
@@ -85,7 +87,7 @@ const appointmentsService = (
       }
 
       // Validate date range
-      if(!isFromBeforeTo(new Date(datetimeFrom), new Date(datetimeTo))){
+      if(!isFromBeforeTo(clock.createDatetime(datetimeFrom), clock.createDatetime(datetimeTo))){
         next(new HttpError({
           message: "Invalid datetime. Please use ISO format and ensure datetimeFrom is before datetimeTo",
           statusCode: 400,
@@ -95,7 +97,9 @@ const appointmentsService = (
 
       /* Validate business logic */
       // Validate appointment is not in the past
-      if(new Date(datetimeFrom) < new Date()){
+      console.log("Current server time:", clock.now());
+      console.log("datetimeFrom:", clock.createDatetime(datetimeFrom));
+      if(clock.createDatetime(datetimeFrom) < clock.now()){
         next(new HttpError({
           message: "Invalid datetime. Appointment datetime cannot be in the past.",
           statusCode: 400,
@@ -116,7 +120,7 @@ const appointmentsService = (
       }
 
       // Validate there is no overlapping appointment
-      const appointments = await appointmentsRepository.getListByDatetimeRangeAndClinicianId(new Date(datetimeFrom), new Date(datetimeTo), clinicianId);
+      const appointments = await appointmentsRepository.getListByDatetimeRangeAndClinicianId(clock.createDatetime(datetimeFrom), clock.createDatetime(datetimeTo), clinicianId);
       if(appointments.length !== 0){
         next(new HttpError({
           message: "This appointment time is not available for this clinician. Please choose another time or clinician.",
@@ -129,12 +133,12 @@ const appointmentsService = (
       const newAppointmentId = await appointmentsRepository.createAppointment(
         clinician,
         patient,
-        new Date(datetimeFrom),
-        new Date(datetimeTo),
+        clock.createDatetime(datetimeFrom),
+        clock.createDatetime(datetimeTo),
       );
 
       response.status(201);
-      response.json({ id: newAppointmentId, clinician, patient, datetimeFrom: new Date(datetimeFrom), datetimeTo: new Date(datetimeTo) });
+      response.json({ id: newAppointmentId, clinician, patient, datetimeFrom: clock.createDatetime(datetimeFrom), datetimeTo: clock.createDatetime(datetimeTo) });
     };
 
   return {

@@ -21,3 +21,4 @@ Future work
 Given more time, I would add the following
 * JS Docs for common functions
 * Generate proper API contract documentation
+* Use UTC

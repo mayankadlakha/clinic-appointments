@@ -11,3 +11,7 @@ One limitation of this approach is that a lot of mocks have to be used. That can
 The tests could also have better coverage. For example, currently they do not test what date is used if datetimeFrom is not provided. Tests like these would provide better coverage of default behaviors.
 
 More tests could be added for scenarios like when clinician does not exist or patient does not exist.
+
+
+Constraints
+* Had to mock the global Date to control datetimes for the tests. In future, could modify the service to take in current datetime, makes it more testable and also removes dependency on server time (e.g. if you wanted to respect a universal timezone).

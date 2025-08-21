@@ -1,3 +1,4 @@
+import Clock from "../../../common/clock";
 import { AppointmentRepository } from "../../../types/appointmentTypes";
 import { ClinicianRepository } from "../../../types/clinicianTypes";
 import { PatientRepository } from "../../../types/patientTypes";
@@ -10,6 +11,17 @@ describe("appointmentsService", () => {
         status: jest.fn(),
         json: jest.fn(),
     } as any;
+  
+    // Override current server time since tests are using fixed dates
+    const currentServerDateTime = new Date("2025-05-15T00:00:00.000Z");
+    const beforeCurrentServerDateTime= new Date("2025-05-14T23:59:59.000Z");
+    class FixedTimeClock extends Clock {
+        override now(): Date {
+            return currentServerDateTime;
+        }
+    }
+    const clock = new FixedTimeClock();
+
 
     const setup = () => {
         const appointmentsRepository: AppointmentRepository = {
@@ -32,6 +44,10 @@ describe("appointmentsService", () => {
         jest.resetAllMocks();
     });
 
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
+
     describe("createAppointment", () => {
         const body = {
             patientId: 5,
@@ -48,7 +64,7 @@ describe("appointmentsService", () => {
             appointmentsRepository.getListByDatetimeRangeAndClinicianId = jest.fn().mockResolvedValue([]);
 
             // Make actual request
-            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {body} as any
             await sut.createAppointment(request, response, next);
             
@@ -70,7 +86,7 @@ describe("appointmentsService", () => {
             appointmentsRepository.getListByDatetimeRangeAndClinicianId = jest.fn().mockResolvedValue([{id: 0, patientId: 5, clinicianId: 10}]);
 
             // Make actual request
-            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {body} as any
             await sut.createAppointment(request, response, next);
 
@@ -91,10 +107,11 @@ describe("appointmentsService", () => {
             ["datetimeTo not a real datetime", {...body, datetimeTo: "2025-05-15T25:00:00.000Z"}, 400],
             ["datetimeFrom occurs after datetimeTo", {...body, datetimeFrom: "2025-05-15T12:00:00.000Z", datetimeTo: "2025-05-15T11:00:00.000Z"}, 400],
             ["appointment duration zero", {...body, datetimeFrom: "2025-05-15T12:00:00.000Z", datetimeTo: "2025-05-15T12:00:00.000Z"}, 400],
+            ["datetimeFrom is in the past", {datetimeFrom: beforeCurrentServerDateTime.toISOString()}, 400],
         ])("given invalid request body with %s, calls next with error", async (_, body, statusCode) => {
             const {appointmentsRepository, cliniciansRepository, patientsRepository} = setup();
             
-            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {body} as any
             next.mockReset();
             await sut.createAppointment(request, response, next);
@@ -121,7 +138,7 @@ describe("appointmentsService", () => {
             appointmentsRepository.getListByDatetimeFrom = jest.fn().mockResolvedValue(mockedList);
 
             // Make actual request
-            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {query} as any
             await sut.getAppointmentsList(request, response, next);
             
@@ -137,13 +154,12 @@ describe("appointmentsService", () => {
             ["datetimeTo invalid", {datetimeFrom, datetimeTo: "invalid-date"}],
             ["datetimeTo not a real datetime", {datetimeFrom, datetimeTo: "2025-05-15T25:00:00.000Z"}],
             ["datetimeFrom occurs after datetimeTo", {datetimeFrom: "2025-05-15T12:00:00.000Z", datetimeTo: "2025-05-15T11:00:00.000Z"}],
-            ["datetimeFrom is in the past", {datetimeFrom: new Date(Date.now() - 1).toISOString()}], // 1ms in the past
            ])("given invalid request with %s, calls next with error", async (_, query) => {
             // Setup mocks
             const {appointmentsRepository, cliniciansRepository, patientsRepository} = setup();
 
             // Make actual request
-            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = appointmentsService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {query} as any
             await sut.getAppointmentsList(request, response, next);
             

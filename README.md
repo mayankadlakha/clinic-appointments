@@ -56,6 +56,8 @@ You can either use the simulation bash scripts below or the sample curl requests
 3. Set permission using `chmod +x SimulationValidations.sh`
 4. Run `SimulationValidations.sh` to run error paths of the API using InMemoryRepositories
 
+Note: these bash scripts have a fixed date in the future (August 2026). These dates might have to be adjusted since the API does not allow appointments in the past.
+
 ### Curl Requests
 These curl requests assume that the API is running on localhost:3000
 *Create appointment*

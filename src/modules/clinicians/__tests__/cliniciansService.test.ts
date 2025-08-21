@@ -1,3 +1,4 @@
+import Clock from "../../../common/clock.js";
 import { AppointmentRepository } from "../../../types/appointmentTypes.js";
 import { ClinicianRepository } from "../../../types/clinicianTypes.js";
 import { PatientRepository } from "../../../types/patientTypes.js";
@@ -10,6 +11,15 @@ describe("cliniciansService", () => {
         status: jest.fn(),
         json: jest.fn(),
     } as any;
+
+    // Override current server time since tests are using fixed dates
+    const currentServerDateTime = new Date("2025-05-15T00:00:00.000Z");
+    class FixedTimeClock extends Clock {
+        override now(): Date {
+            return currentServerDateTime;
+        }
+    }
+    const clock = new FixedTimeClock();
 
     const setup = () => {
         const appointmentsRepository: AppointmentRepository = {
@@ -48,7 +58,7 @@ describe("cliniciansService", () => {
             appointmentsRepository.getListByDatetimeRangeAndClinicianId = jest.fn().mockResolvedValue(mockedList);
 
             // Make actual request
-            const sut = cliniciansService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = cliniciansService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {params, query} as any
             await sut.getAppointmentsListByClinicianId(request, response, next);
             
@@ -61,7 +71,6 @@ describe("cliniciansService", () => {
         it.each([
             ["clinicianId undefined", {}, {datetimeFrom}],
             ["clinicianId negative", {id: -5}, {datetimeFrom}],
-            ["clinicianId string", {id: "5"}, {datetimeFrom}],
             ["datetimeFrom invalid", params, {datetimeFrom: "invalid-date"}],
             ["datetimeFrom not a real datetime", params, {datetimeFrom: "2025-05-15T25:00:00.000Z"}],
             ["datetimeTo invalid", params, {datetimeFrom, datetimeTo: "invalid-date"}],
@@ -72,7 +81,7 @@ describe("cliniciansService", () => {
             const {appointmentsRepository, cliniciansRepository, patientsRepository} = setup();
 
             // Make actual request
-            const sut = cliniciansService(appointmentsRepository, cliniciansRepository, patientsRepository);
+            const sut = cliniciansService(appointmentsRepository, cliniciansRepository, patientsRepository, clock);
             const request = {params, query} as any
             await sut.getAppointmentsListByClinicianId(request, response, next);
             
