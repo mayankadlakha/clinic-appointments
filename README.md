@@ -18,7 +18,6 @@ This API currently supports the following functionality:
 - Create new appointments
 `POST /appointments` to create new appointments with a request body:
 ```
-```json
 {
   "patientId": number,
   "clinicianId": number,
@@ -28,7 +27,6 @@ This API currently supports the following functionality:
 ```
 - `GET /appointments` to retrieve a list of appointments with optional query parameters: 
 ```
-```json
 /appointments //defaults to current server time for datetimeFrom
 /appointments?datetimeFrom=2025-05-05T10:00:00Z
 /appointments?datetimeFrom=2025-05-05T10:00:00Z&datetimeTo=2025-05-06T10:00:00Z
@@ -36,7 +34,6 @@ This API currently supports the following functionality:
 
 - `GET /clinicians/:id/appointments` to retrieve a list of appointments for a particular clinicianId with optional query parameters: 
 ```
-```json
 /clinicians/:id/appointments //defaults to current server time for datetimeFrom
 /clinicians/:id/appointments?datetimeFrom=2025-05-05T10:00:00Z
 /clinicians/:id/appointments?datetimeFrom=2025-05-05T10:00:00Z&datetimeTo=2025-05-06T10:00:00Z
@@ -47,6 +44,8 @@ This API currently supports the following functionality:
 1. Install dependencies using `npm install`
 2. Compile the TypeScript code using `npm run build`
 3. Start the server using `npm start`
+
+Note: You will need Node.js installed. Recommendation will be Node v18 or above.
 
 ## Simulation
 ### Bash scripts
@@ -60,6 +59,7 @@ Note: these bash scripts have a fixed date in the future (August 2026). These da
 
 ### Curl Requests
 These curl requests assume that the API is running on localhost:3000
+
 *Create appointment*
 ```
 curl -i -X POST "http://localhost:3000/appointments" \
@@ -67,20 +67,20 @@ curl -i -X POST "http://localhost:3000/appointments" \
     -d '{
         "clinicianId": 0,
         "patientId": 0,
-        "datetimeFrom": "2025-08-16T12:00:00.000Z",
-        "datetimeTo": "2025-08-16T13:00:00.000Z"
+        "datetimeFrom": "2026-08-16T12:00:00.000Z",
+        "datetimeTo": "2026-08-16T13:00:00.000Z"
     }'
 ```
 
 *Get appointments list*
 ```
-curl -i -X GET "http://localhost:3000/appointments?datetimeFrom=2025-08-16T12:00:00.000Z&datetimeTo=2025-08-16T13:00:00.000Z" \
+curl -i -X GET "http://localhost:3000/appointments?datetimeFrom=2026-08-16T12:00:00.000Z&datetimeTo=2026-08-16T13:00:00.000Z" \
     -H "Content-Type: application/json"
 ```
 
-Get appointments list for a specific clinician
+*Get appointments list for a specific clinician*
 ```
-curl -i -X GET "http://localhost:3000/clinicians/0/appointments?datetimeFrom=2025-08-16T12:00:00.000Z&datetimeTo=2025-08-16T14:00:00.000Z" \
+curl -i -X GET "http://localhost:3000/clinicians/0/appointments?datetimeFrom=2026-08-16T12:00:00.000Z&datetimeTo=2026-08-16T14:00:00.000Z" \
     -H "Accept: application/json"
 ```
 

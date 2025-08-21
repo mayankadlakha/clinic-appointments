@@ -97,8 +97,6 @@ const appointmentsService = (
 
       /* Validate business logic */
       // Validate appointment is not in the past
-      console.log("Current server time:", clock.now());
-      console.log("datetimeFrom:", clock.createDatetime(datetimeFrom));
       if(clock.createDatetime(datetimeFrom) < clock.now()){
         next(new HttpError({
           message: "Invalid datetime. Appointment datetime cannot be in the past.",

@@ -29,6 +29,12 @@ app.use("/clinicians", getCliniciansRoutes(router, appointmentsRepository, clini
 app.use(routeNotFoundMiddleware);
 app.use(errorHandlerMiddleware)
 
+// Graceful shutdown when unhandled promise rejection occurs
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  process.exit(1);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
