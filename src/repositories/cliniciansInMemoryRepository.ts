@@ -1,4 +1,4 @@
-import { Clinician, ClinicianRepository } from "../types/clinicianTypes";
+import { Clinician, ClinicianRepository } from "../types/clinicianTypes.js";
 import {clinicians} from "./inMemoryData.js";
 
 const cliniciansInMemoryRepository : ClinicianRepository = {

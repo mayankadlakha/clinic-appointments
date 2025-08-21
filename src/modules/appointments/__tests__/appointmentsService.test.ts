@@ -137,6 +137,7 @@ describe("appointmentsService", () => {
             ["datetimeTo invalid", {datetimeFrom, datetimeTo: "invalid-date"}],
             ["datetimeTo not a real datetime", {datetimeFrom, datetimeTo: "2025-05-15T25:00:00.000Z"}],
             ["datetimeFrom occurs after datetimeTo", {datetimeFrom: "2025-05-15T12:00:00.000Z", datetimeTo: "2025-05-15T11:00:00.000Z"}],
+            ["datetimeFrom is in the past", {datetimeFrom: new Date(Date.now() - 1).toISOString()}], // 1ms in the past
            ])("given invalid request with %s, calls next with error", async (_, query) => {
             // Setup mocks
             const {appointmentsRepository, cliniciansRepository, patientsRepository} = setup();

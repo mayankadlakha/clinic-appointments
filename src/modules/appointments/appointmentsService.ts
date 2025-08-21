@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { Appointment, AppointmentRepository, CreateAppointmentRequest } from "../../types/appointmentTypes.js";
 import { PatientRepository } from "../../types/patientTypes.js";
 import { ClinicianRepository } from "../../types/clinicianTypes.js";
-import { isFromBeforeTo, isValidISODate } from "../../common/datetimeValidator";
-import { HttpError } from "../../common/errors";
+import { isFromBeforeTo, isValidISODate } from "../../common/datetimeValidator.js";
+import { HttpError } from "../../common/errors.js";
 
 
 
@@ -94,6 +94,15 @@ const appointmentsService = (
       }
 
       /* Validate business logic */
+      // Validate appointment is not in the past
+      if(new Date(datetimeFrom) < new Date()){
+        next(new HttpError({
+          message: "Invalid datetime. Appointment datetime cannot be in the past.",
+          statusCode: 400,
+        }));
+        return;
+      }
+
       // Validate clinician and patient exist
       const clinician = await cliniciansRepository.getById(clinicianId);
       const patient = await patientsRepository.getById(patientId);

@@ -4,7 +4,7 @@ const tsJestTransformCfg = createDefaultPreset().transform;
 
 /** @type {import("jest").Config} **/
 export default {
-   preset: 'ts-jest/presets/default-esm', // note the ESM preset
+   preset: 'ts-jest/presets/default-esm',
   extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
@@ -17,5 +17,9 @@ export default {
   testMatch: ['**/__tests__/**/*.test.ts'],
   transform: {
     ...tsJestTransformCfg,
+  },
+  moduleFileExtensions: ["ts", "js"],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
   },
 };

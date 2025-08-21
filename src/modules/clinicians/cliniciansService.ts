@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { isValidISODate, isFromBeforeTo } from "../../common/datetimeValidator";
-import { Appointment, AppointmentRepository } from "../../types/appointmentTypes";
-import { PatientRepository } from "../../types/patientTypes";
-import { ClinicianRepository } from "../../types/clinicianTypes";
-import { HttpError } from "../../common/errors";
+import { isValidISODate, isFromBeforeTo } from "../../common/datetimeValidator.js";
+import { Appointment, AppointmentRepository } from "../../types/appointmentTypes.js";
+import { PatientRepository } from "../../types/patientTypes.js";
+import { ClinicianRepository } from "../../types/clinicianTypes.js";
+import { HttpError } from "../../common/errors.js";
 
 
 const MAX_JS_DATE_MS = 8640000000000000;
@@ -22,7 +22,7 @@ const cliniciansService = (
   {
 
   const getAppointmentsListByClinicianId = async (request: Request<{id: string}, {}, {}, AppointmentsQuery>, response: Response, next: NextFunction) => {
-    const clinicianId = request.params.id;
+    const clinicianId = Number(request.params.id);
     const params = request.query;
     const datetimeFrom: string = params.datetimeFrom || new Date().toISOString();
     const datetimeTo: string | undefined = params.datetimeTo;

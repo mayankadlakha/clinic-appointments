@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "./errorHandlerMiddleware.js";
+import { HttpError } from "../common/errors.js";
 
 const  routeNotFoundMiddleware = (request: Request, response: Response, next: NextFunction) => {
   next(new HttpError({

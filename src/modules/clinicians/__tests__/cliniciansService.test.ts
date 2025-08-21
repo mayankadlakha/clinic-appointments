@@ -1,7 +1,7 @@
-import { AppointmentRepository } from "../../../types/appointmentTypes";
-import { ClinicianRepository } from "../../../types/clinicianTypes";
-import { PatientRepository } from "../../../types/patientTypes";
-import cliniciansService from "../cliniciansService";
+import { AppointmentRepository } from "../../../types/appointmentTypes.js";
+import { ClinicianRepository } from "../../../types/clinicianTypes.js";
+import { PatientRepository } from "../../../types/patientTypes.js";
+import cliniciansService from "../cliniciansService.js";
 
 
 describe("cliniciansService", () => {

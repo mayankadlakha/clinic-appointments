@@ -1,6 +1,6 @@
-import { AppointmentEntityCollection } from "../types/appointmentTypes";
-import { ClinicianEntityCollection } from "../types/clinicianTypes";
-import { PatientEntityCollection } from "../types/patientTypes";
+import { AppointmentEntityCollection } from "../types/appointmentTypes.js";
+import { ClinicianEntityCollection } from "../types/clinicianTypes.js";
+import { PatientEntityCollection } from "../types/patientTypes.js";
 
 export const appointments: AppointmentEntityCollection = {
   // 0: {

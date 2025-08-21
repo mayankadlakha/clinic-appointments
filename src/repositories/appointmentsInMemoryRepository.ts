@@ -1,6 +1,6 @@
-import { Appointment, AppointmentRepository } from "../types/appointmentTypes";
-import { Clinician } from "../types/clinicianTypes";
-import { Patient } from "../types/patientTypes";
+import { Appointment, AppointmentRepository } from "../types/appointmentTypes.js";
+import { Clinician } from "../types/clinicianTypes.js";
+import { Patient } from "../types/patientTypes.js";
 import {appointments, clinicians, patients} from "./inMemoryData.js";
 
 const appointmentsInMemoryRepository : AppointmentRepository = {
@@ -47,10 +47,12 @@ const appointmentsInMemoryRepository : AppointmentRepository = {
             const entryDatetimeFrom = new Date(entry.datetimeFrom);
             const entryDatetimeTo = new Date(entry.datetimeTo);
 
-            
-            const isAppointmentStartingWithinRange = entryDatetimeFrom >= datetimeFrom && entryDatetimeFrom < datetimeTo;
-          
-            if(isAppointmentStartingWithinRange){
+            // Check if the target datetime is within this entry's from and to datetime
+            // Note that touching the boundaries (i.e. start on entryDatetimeTo and end on entryDatetimeFrom) is not considered an overlap
+            const isAppointmentStartingWithinRange = datetimeFrom >= entryDatetimeFrom && datetimeFrom < entryDatetimeTo;
+            const isAppointmentEndingWithinRange = datetimeTo > entryDatetimeFrom && datetimeTo <= entryDatetimeTo;
+
+            if(isAppointmentStartingWithinRange || isAppointmentEndingWithinRange){
                 // Using non-null assertion because we are confident that the clinician exists
                 const clinician = clinicians[Number(entry.clinicianId)]!;
                 const patient = patients[Number(entry.patientId)]!;
