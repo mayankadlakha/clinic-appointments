@@ -5,8 +5,7 @@
  * @param {string} datetimeString - The datetime string to validate.
  * @returns {boolean} - Returns true if the datetime string is valid ISO 8601, otherwise false.
  */
-const isValidISODate = (datetimeString: string) => {
-    
+const isValidISODate = (datetimeString: string): boolean => {
     try{
         const datetimeDate: Date = new Date(datetimeString);
         const datetimeStringISO: string = datetimeDate.toISOString();
