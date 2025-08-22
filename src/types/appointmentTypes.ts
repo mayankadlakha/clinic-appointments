@@ -19,6 +19,7 @@ export interface Appointment {
     datetimeTo: Date; 
 }
 
+export type AppointmentStatus = "scheduled" | "completed" | "cancelled"
 export type AppointmentType = "initial" | "subsequent" | "long"
 
 

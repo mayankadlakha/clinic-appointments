@@ -1,4 +1,22 @@
 ## Workflow
+This is a potential workflow that would work with the given requirements:
+1. Admin creates Clinician account.
+3. Patient creates Patient account. 
+4. Patient views all available appointments.
+5. Patient books appointment with a Clinician. [IN SCOPE]
+6. Patient confirms attendance.
+  * A. Patient confirms appointment.
+  * B. Patient cancels appointment.
+7. Admin checks all appointments for the day. [IN SCOPE]
+8. Clinician checks their schedule for the day. [IN SCOPE]
+
+
+
+
+
+## Alternate Workflow
+This is an alternate workflow where appointments can have a status and have to first be created by a Clinician or Admin, before they can be booked.
+This workflow is different to the one that matches current requirements and may require further understanding of the use case.
 1. Admin creates Clinician account.
 2. Clinician adds available appointments. 
 3. Patient creates Patient account. 
