@@ -8,6 +8,7 @@ I have added some additional things that were not mentioned in the original requ
 * Added a Clock so time can be managed easily for the server.
 * Added an error handling middleware to catch and respond to errors consistently.
 * A catch all for unhandledRejection errors to capture any promise rejections.
+* Kept the idea of idempotency in mind when building the API for the GET requests.
 
 
 
@@ -25,3 +26,9 @@ I have added some additional things that were not mentioned in the original requ
 * I would use objects in for params to avoid any confusion with parameter order.
 * Add a global App logger instead of doing console.log and provide consistent logs.
 
+## Future mechanisms
+* Consider Rate limiting if this API is expected to handle a large number of requests.
+* Add role based entitlements and permissions.
+* Contract tests
+* Versioning if needed
+* Gracefule shutdown of the server
